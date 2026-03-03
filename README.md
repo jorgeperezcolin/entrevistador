@@ -1,34 +1,73 @@
-# Las Más Innovadoras — Modo Jurado (100% local, sin API)
+# Las Más Innovadoras — Modo Jurado (100% local, sin API) + Entregables al entrevistado
 
-Aplicación en Streamlit para conducir la entrevista y generar **scoring determinístico local** (sin llamadas a OpenAI ni a ningún API), con:
+App en Streamlit para conducir la entrevista, calcular scoring determinístico y generar 3 entregables para el entrevistado:
 
-- Entrevista estructurada (6 bloques)
-- Checklist de evidencia (baseline, periodo, fuente, owner, método)
-- Scoring automático local por 6 dimensiones (1–5) basado en heurísticas
-- Control de dispersión A/B/C (si capturas 3 rondas/jurados)
-- Decision Registry local (máx 7 decisiones)
-- Exportables: JSON completo + Pack Ejecutivo (Markdown)
+1) **Benchmark** de la innovación (vs cohorte configurable)  
+2) **Caso de éxito publicable** (one-pager)  
+3) **Caso de negocio para Consejo** (board memo)
 
----
-
-## 1. Qué hace y qué no hace
-
-### Hace
-- Estandariza la captura de respuestas y la trazabilidad.
-- Señala vacíos de evidencia de forma consistente.
-- Produce un score **conservador** para priorizar aclaraciones.
-- Genera un Decision Registry accionable para cerrar evidencia.
-
-### No hace
-- No valida documentos externos.
-- No calcula causalidad real; sólo detecta señales textuales.
-- No sustituye el juicio del jurado.
+Sin llamadas a OpenAI ni a ningún API.
 
 ---
 
-## 2. Arquitectura conceptual
+## 1) Qué resuelve
 
-### 6 Bloques de entrevista
+- Estandariza entrevistas y evita “claims” sin evidencia.
+- Produce un score conservador y trazable (heurísticas).
+- Devuelve valor inmediato al candidato con:
+  - Diagnóstico vs benchmark
+  - Narrativa publicable (con gate editorial)
+  - Memo para Consejo con estructura ejecutiva
+
+---
+
+## 2) Entregables
+
+### 2.1 Benchmark (para entrevistado)
+Comparativo por dimensión vs **mediana de cohorte** (configurable en UI):
+
+- Estatus por dimensión:
+  - Arriba de cohorte
+  - En línea con cohorte
+  - Abajo de cohorte
+- Identifica **brechas prioritarias** para mejorar el benchmark
+
+> Importante: la cohorte es un “reference set” operado por el usuario (no se infiere sola).
+
+### 2.2 Caso de éxito publicable (one-pager)
+Documento para publicación externa con secciones:
+
+- Situación
+- Enfoque
+- Resultados
+- Adopción
+- Gobernanza
+- Lecciones
+
+Incluye **aviso editorial automático** si faltan elementos de evidencia (baseline/periodo/fuente/owner/método), para evitar publicar cifras frágiles.
+
+Opciones:
+- Anonimizar empresa
+- Definir audiencia objetivo
+- Restringir mención de vendors/marcas
+
+### 2.3 Caso de negocio para Consejo (board memo)
+Memo ejecutivo que estructura:
+
+- Decisión solicitada al Consejo
+- Problema estratégico
+- Intervención y operating model
+- Caso económico (con “pendiente de evidencia” si falta cierre)
+- Riesgos/controles/supuestos
+- Adopción/escalabilidad
+- KPIs de control y governance
+- Apéndice: scorecard local (6 dimensiones)
+
+---
+
+## 3) Arquitectura conceptual
+
+### 3.1 Bloques de entrevista (6)
 1. Contexto Estratégico  
 2. Diseño de la Solución  
 3. Impacto Económico y Operativo  
@@ -36,7 +75,7 @@ Aplicación en Streamlit para conducir la entrevista y generar **scoring determi
 5. Adopción y Escalamiento  
 6. Reusabilidad y Aprendizaje  
 
-### 6 Dimensiones de scoring
+### 3.2 Dimensiones de scoring (6)
 1. Impacto económico y operacional  
 2. Evidencia y medición  
 3. Gobernanza y riesgo  
@@ -44,13 +83,18 @@ Aplicación en Streamlit para conducir la entrevista y generar **scoring determi
 5. Novedad y diseño de la solución  
 6. Reusabilidad y aprendizaje  
 
-El scoring se deriva de:
-- Presencia de señales (palabras clave, números, unidades, términos de governance, etc.)
-- Completitud de evidencia en general y especialmente en el bloque de impacto
+### 3.3 Evidencia mínima (checklist)
+La app penaliza cuando no detecta:
+
+- Baseline
+- Periodo/fechas de medición
+- Fuente del dato (sistema/reporte)
+- Owner del KPI
+- Método de cálculo (definición/fórmula)
 
 ---
 
-## 3. Requisitos
+## 4) Requisitos
 
 ### Python
 - Python 3.9+ recomendado
